@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kiurhub.ph/sitemap.xml
+
+# Specific pages
+Allow: /documents
+Allow: /weather
+Allow: /maps
+Allow: /forum
+
+# Admin and private areas
+Disallow: /admin
+Disallow: /profile
+Disallow: /api/
+
+# File types
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.ico
+Allow: *.pdf
+
+# Crawl delay (optional)
+Crawl-delay: 1
