@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const socketIo = require('socket.io');
 const http = require('http');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -23,6 +24,7 @@ const forumRoutes = require('./routes/forum');
 const weatherRoutes = require('./routes/weather');
 const adminRoutes = require('./routes/admin');
 const chatRoutes = require('./routes/chat');
+const setupRoutes = require('./routes/setup');
 
 // Middleware
 app.use(helmet());
@@ -44,6 +46,24 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Serve uploaded files
 app.use('/uploads', express.static('server/uploads'));
 
+// Serve React app in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/api')) {
+      return res.status(404).json({ message: 'API endpoint not found' });
+    }
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
+}
+
+// Health check endpoint for deployment
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
@@ -51,6 +71,7 @@ app.use('/api/forum', forumRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/setup', setupRoutes);
 
 // Socket.io for real-time chat
 io.on('connection', (socket) => {

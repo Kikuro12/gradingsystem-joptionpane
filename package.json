@@ -7,11 +7,13 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
     "client": "cd client && npm start",
-    "build": "cd client && npm run build",
+    "build": "cd client && npm run build && npm run build:server",
+    "build:server": "echo 'Server build complete'",
     "install-all": "npm install && cd client && npm install",
     "start": "node server/index.js",
     "setup": "node test-setup.js",
-    "test": "echo \"Tests will be implemented in future versions\" && exit 0"
+    "test": "echo \"Tests will be implemented in future versions\" && exit 0",
+    "postinstall": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "express": "^4.18.2",
