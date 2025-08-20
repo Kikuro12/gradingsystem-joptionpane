@@ -13,7 +13,8 @@
     "start": "node server/index.js",
     "setup": "node test-setup.js",
     "test": "echo \"Tests will be implemented in future versions\" && exit 0",
-    "postinstall": "cd client && npm install && npm run build"
+    "postinstall": "npm run build:client",
+    "build:client": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "express": "^4.18.2",
